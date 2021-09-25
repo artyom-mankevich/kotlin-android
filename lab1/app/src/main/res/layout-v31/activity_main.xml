@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/input_field"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:ellipsize="start"
+        android:gravity="end|bottom"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="40sp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_7"
+                style="@style/NumberButton"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/btn_8"
+                style="@style/NumberButton"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/btn_9"
+                style="@style/NumberButton"
+                android:text="9" />
+
+            <Button
+                android:id="@+id/mul_btn"
+                style="@style/ActionButton"
+                android:text="x" />
+
+            <Button
+                android:id="@+id/div_btn"
+                style="@style/ActionButton"
+                android:text="/" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_4"
+                style="@style/NumberButton"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/btn_5"
+                style="@style/NumberButton"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/btn_6"
+                style="@style/NumberButton"
+                android:text="6" />
+
+            <Button
+                android:id="@+id/add_btn"
+                style="@style/ActionButton"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/sub_btn"
+                style="@style/ActionButton"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_1"
+                style="@style/NumberButton"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/btn_2"
+                style="@style/NumberButton"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/btn_3"
+                style="@style/NumberButton"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/l_bracket_btn"
+                style="@style/ActionButton"
+                android:text="(" />
+
+            <Button
+                android:id="@+id/r_bracket_btn"
+                style="@style/ActionButton"
+                android:text=")" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom">
+
+            <Button
+                android:id="@+id/btn_0"
+                style="@style/NumberButton"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btn_comma"
+                style="@style/NumberButton"
+                android:text=","/>
+
+            <Button
+                android:id="@+id/btn_dummy"
+                style="@style/NumberButton"
+                android:allowClickWhenDisabled="false"
+                android:text=""/>
+
+            <Button
+                android:id="@+id/clear_btn"
+                style="@style/ActionButton"
+                android:text="C" />
+
+            <Button
+                android:id="@+id/equal_btn"
+                style="@style/ActionButton"
+                android:text="=" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
