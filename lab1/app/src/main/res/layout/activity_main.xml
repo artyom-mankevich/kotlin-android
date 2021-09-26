@@ -15,11 +15,12 @@
         android:ellipsize="start"
         android:gravity="end|bottom"
         android:importantForAutofill="no"
-        android:paddingEnd="7pt"
-        android:paddingBottom="7pt"
+        android:paddingEnd="10pt"
+        android:paddingStart="10pt"
+        android:paddingBottom="10pt"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="40sp"
+        android:textSize="50sp"
         android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
 
     <TextView
@@ -27,11 +28,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"
+        android:paddingEnd="10pt"
+        android:paddingStart="10pt"
+        android:paddingBottom="10pt"
+        android:enabled="true"
+        android:focusable="true"
+        android:longClickable="true"
         android:ellipsize="start"
         android:gravity="end|bottom"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        android:scrollHorizontally="true"
+        android:textIsSelectable="true"
+        android:descendantFocusability="beforeDescendants"
+        />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -157,10 +168,10 @@
                 android:text="@string/_0" />
 
             <Button
-                android:id="@+id/btn_comma"
+                android:id="@+id/btn_dot"
                 style="@style/NumberButton"
-                android:onClick="commaClick"
-                android:text="@string/_comma" />
+                android:onClick="dotClick"
+                android:text="@string/dot" />
 
             <Button
                 android:id="@+id/clear_all_btn"

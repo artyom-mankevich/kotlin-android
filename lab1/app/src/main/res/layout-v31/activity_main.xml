@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,16 +7,42 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/input_field"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:ellipsize="start"
         android:gravity="end|bottom"
+        android:importantForAutofill="no"
+        android:paddingEnd="10pt"
+        android:paddingStart="10pt"
+        android:paddingBottom="10pt"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="40sp" />
+        android:textSize="50sp"
+        android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
+
+    <TextView
+        android:id="@+id/result_field"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:paddingEnd="10pt"
+        android:paddingStart="10pt"
+        android:paddingBottom="10pt"
+        android:enabled="true"
+        android:focusable="true"
+        android:longClickable="true"
+        android:ellipsize="start"
+        android:gravity="end|bottom"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        android:scrollHorizontally="true"
+        android:textIsSelectable="true"
+        android:descendantFocusability="beforeDescendants"
+        />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -32,27 +57,32 @@
             <Button
                 android:id="@+id/btn_7"
                 style="@style/NumberButton"
-                android:text="7" />
+                android:onClick="typeClick"
+                android:text="@string/_7" />
 
             <Button
                 android:id="@+id/btn_8"
                 style="@style/NumberButton"
-                android:text="8" />
+                android:onClick="typeClick"
+                android:text="@string/_8" />
 
             <Button
                 android:id="@+id/btn_9"
                 style="@style/NumberButton"
-                android:text="9" />
+                android:onClick="typeClick"
+                android:text="@string/_9" />
 
             <Button
                 android:id="@+id/mul_btn"
                 style="@style/ActionButton"
-                android:text="x" />
+                android:onClick="actionClick"
+                android:text="@string/mul" />
 
             <Button
                 android:id="@+id/div_btn"
                 style="@style/ActionButton"
-                android:text="/" />
+                android:onClick="actionClick"
+                android:text="@string/div" />
         </TableRow>
 
         <TableRow
@@ -62,27 +92,32 @@
             <Button
                 android:id="@+id/btn_4"
                 style="@style/NumberButton"
-                android:text="4" />
+                android:onClick="typeClick"
+                android:text="@string/_4" />
 
             <Button
                 android:id="@+id/btn_5"
                 style="@style/NumberButton"
-                android:text="5" />
+                android:onClick="typeClick"
+                android:text="@string/_5" />
 
             <Button
                 android:id="@+id/btn_6"
                 style="@style/NumberButton"
-                android:text="6" />
+                android:onClick="typeClick"
+                android:text="@string/_6" />
 
             <Button
                 android:id="@+id/add_btn"
                 style="@style/ActionButton"
-                android:text="+" />
+                android:onClick="actionClick"
+                android:text="@string/add" />
 
             <Button
                 android:id="@+id/sub_btn"
                 style="@style/ActionButton"
-                android:text="-" />
+                android:onClick="actionClick"
+                android:text="@string/sub" />
         </TableRow>
 
         <TableRow
@@ -92,59 +127,69 @@
             <Button
                 android:id="@+id/btn_1"
                 style="@style/NumberButton"
-                android:text="1" />
+                android:onClick="typeClick"
+                android:text="@string/_1" />
 
             <Button
                 android:id="@+id/btn_2"
                 style="@style/NumberButton"
-                android:text="2" />
+                android:onClick="typeClick"
+                android:text="@string/_2" />
 
             <Button
                 android:id="@+id/btn_3"
                 style="@style/NumberButton"
-                android:text="3" />
+                android:onClick="typeClick"
+                android:text="@string/_3" />
 
             <Button
                 android:id="@+id/l_bracket_btn"
                 style="@style/ActionButton"
-                android:text="(" />
+                android:onClick="typeClick"
+                android:text="@string/leftBracket" />
 
             <Button
                 android:id="@+id/r_bracket_btn"
                 style="@style/ActionButton"
-                android:text=")" />
+                android:onClick="typeClick"
+                android:text="@string/rightBracket" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:weightSum="5">
 
             <Button
                 android:id="@+id/btn_0"
                 style="@style/NumberButton"
-                android:text="0" />
+                android:onClick="typeClick"
+                android:text="@string/_0" />
 
             <Button
-                android:id="@+id/btn_comma"
+                android:id="@+id/btn_dot"
                 style="@style/NumberButton"
-                android:text=","/>
+                android:onClick="dotClick"
+                android:text="@string/dot" />
 
             <Button
-                android:id="@+id/btn_dummy"
-                style="@style/NumberButton"
-                android:allowClickWhenDisabled="false"
-                android:text=""/>
-
-            <Button
-                android:id="@+id/clear_btn"
+                android:id="@+id/clear_all_btn"
                 style="@style/ActionButton"
-                android:text="C" />
+                android:onClick="clearAllButton"
+                android:text="@string/clearAll" />
+
+            <Button
+                android:id="@+id/erase_btn"
+                style="@style/ActionButton"
+                android:onClick="eraseClick"
+                android:text="@string/clear" />
 
             <Button
                 android:id="@+id/equal_btn"
                 style="@style/ActionButton"
-                android:text="=" />
+                android:onClick="equalClick"
+                android:text="@string/equal" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
