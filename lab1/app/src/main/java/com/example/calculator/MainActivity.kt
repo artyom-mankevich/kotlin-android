@@ -2,21 +2,33 @@ package com.example.calculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import com.notkamui.keval.Keval
+import com.notkamui.keval.KevalInvalidExpressionException
+import com.notkamui.keval.KevalInvalidSymbolException
+import com.notkamui.keval.KevalZeroDivisionException
 import kotlin.math.max
 import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
     private lateinit var inputField: EditText
+    private lateinit var resultField: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         inputField = findViewById(R.id.input_field)
         inputField.showSoftInputOnFocus = false
         inputField.requestFocus()
+
+        resultField = findViewById(R.id.result_field)
+        resultField.movementMethod = ScrollingMovementMethod()
+        resultField.setTextIsSelectable(true)
     }
 
     fun typeClick(view: View) {
@@ -36,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun commaClick(view: View) {
+    fun dotClick(view: View) {
+        val buttonChar = (view as Button).text.single()
         val cursorPos = inputField.selectionEnd.coerceAtLeast(0)
         val hasSelected = cursorPos - inputField.selectionStart.coerceAtLeast(0) != 0
         val text = inputField.text
@@ -44,27 +57,28 @@ class MainActivity : AppCompatActivity() {
         // if previous character is comma -> return
         if (cursorPos > 0) {
             val prevChar = text[cursorPos - 1]
-            if (prevChar == ',') {
+            if (prevChar == buttonChar) {
                 return
             }
         }
 
         // if user selected something or text is empty -> replace the selected with comma
         if (hasSelected || text.isEmpty()) {
-            insertInInputField(",")
+            insertInInputField(buttonChar.toString())
             return
         }
 
         val number = getEnclosedNumber(text, cursorPos)
-        if (number.contains(',')) {
+        if (number.contains(buttonChar)) {
             return
         } else {
-            insertInInputField(",")
+            insertInInputField(buttonChar.toString())
         }
     }
 
     fun clearAllButton(view: View) {
         inputField.setText("")
+        resultField.text = ""
     }
 
     fun actionClick(view: View) {
