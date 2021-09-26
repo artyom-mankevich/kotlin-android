@@ -95,7 +95,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun equalClick(view: View) {}
+    fun equalClick(view: View) {
+        val text = inputField.text.toString()
+
+        if (text.isEmpty()) {
+            return
+        }
+
+        try {
+            val result = Keval.eval(text)
+            resultField.text = result.toString()
+        } catch (e: KevalZeroDivisionException) {
+            resultField.text = getString(R.string.zeroDivision)
+        } catch (e: KevalInvalidSymbolException) {
+            resultField.text = getString(R.string.invalidOperator)
+        } catch (e: KevalInvalidExpressionException) {
+            resultField.text = getString(R.string.invalidExpression)
+        }
+
+    }
 
     private fun getEnclosedNumber(text: CharSequence, cursorPos: Int): CharSequence {
         // index of first digit of number
