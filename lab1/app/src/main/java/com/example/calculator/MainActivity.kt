@@ -19,25 +19,13 @@ class MainActivity : AppCompatActivity() {
         inputField.requestFocus()
     }
 
-    private fun insertInInputField(text: String) {
-        val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
-
-        val start = inputField.selectionStart.coerceAtLeast(0)
-        val end = inputField.selectionEnd.coerceAtLeast(0)
-        val newText =
-            inputField.text.replace(min(start, end), max(start, end), text, 0, text.length)
-        inputField.text = newText
-        inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
-    }
-
     fun typeClick(view: View) {
         val button = view as Button
         insertInInputField(button.text.toString())
     }
 
     fun eraseClick(view: View) {
-        val hasSelected = inputField.selectionEnd - inputField.selectionStart != 0
-        if (hasSelected) {
+        if (inputField.selectionEnd - inputField.selectionStart != 0) {
             insertInInputField("")
         } else if (inputField.selectionEnd > 0) {
             val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
@@ -49,7 +37,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun commaClick(view: View) {
-        if (!inputField.text.contains(',')) {
+        val cursorPos = inputField.selectionEnd.coerceAtLeast(0)
+        val hasSelected = cursorPos - inputField.selectionStart.coerceAtLeast(0) != 0
+        val text = inputField.text
+
+        // if previous character is comma -> return
+        if (cursorPos > 0) {
+            val prevChar = text[cursorPos - 1]
+            if (prevChar == ',') {
+                return
+            }
+        }
+
+        // if user selected something or text is empty -> replace the selected with comma
+        if (hasSelected || text.isEmpty()) {
+            insertInInputField(",")
+            return
+        }
+
+        val number = getEnclosedNumber(text, cursorPos)
+        if (number.contains(',')) {
+            return
+        } else {
             insertInInputField(",")
         }
     }
@@ -70,8 +79,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (cursorPos > 0) {
-            prevChar = inputField.text.toString()[cursorPos - 1]
+            prevChar = inputField.text[cursorPos - 1]
         }
+
         when (prevChar) {
             '+', '-', '/', '*' -> {
                 val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
@@ -80,11 +90,57 @@ class MainActivity : AppCompatActivity() {
                 inputField.setText(stringBuilder)
                 inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
             }
-            null -> {
-            }
+            null -> return
             else -> insertInInputField(buttonChar.toString())
         }
     }
 
     fun equalClick(view: View) {}
+
+    private fun getEnclosedNumber(text: CharSequence, cursorPos: Int): CharSequence {
+        // index of first digit of number
+        val numberStart = getNumberStart(text, cursorPos)
+
+        // index of last digit of number
+        var numberEnd = getNumberEnd(text, cursorPos)
+
+        if (numberEnd == -1) {
+            // if no arithmetic signs were found right of cursor
+            numberEnd = text.length
+        } else if (numberEnd != text.length) {
+            // if arithmetic sign was found,
+            // numberEnd is assigned the index of that sign as if it was in original array
+            numberEnd += cursorPos + 1
+        }
+
+        return text.slice(numberStart until numberEnd)
+    }
+
+    private fun getNumberStart(text: CharSequence, cursorPos: Int): Int {
+        return text.slice(0 until cursorPos).indexOfLast {
+            it == '-' || it == '+' || it == '/' || it == '*'
+        }.coerceAtLeast(0)
+    }
+
+    private fun getNumberEnd(text: CharSequence, cursorPos: Int): Int {
+        val numberEnd = if (cursorPos != text.length) {
+            text.slice(cursorPos until text.length).indexOfFirst {
+                it == '-' || it == '+' || it == '/' || it == '*'
+            }
+        } else {
+            text.length
+        }
+        return numberEnd
+    }
+
+    private fun insertInInputField(text: String) {
+        val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
+
+        val start = inputField.selectionStart.coerceAtLeast(0)
+        val end = inputField.selectionEnd.coerceAtLeast(0)
+        val newText =
+            inputField.text.replace(min(start, end), max(start, end), text, 0, text.length)
+        inputField.text = newText
+        inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+    }
 }
