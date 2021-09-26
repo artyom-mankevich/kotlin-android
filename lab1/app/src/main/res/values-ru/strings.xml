@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="zeroDivision">Нельзя делить на 0</string>
+    <string name="invalidExpression">Неверное выражение</string>
+    <string name="invalidOperator">Неверный оператор</string>
+</resources>
