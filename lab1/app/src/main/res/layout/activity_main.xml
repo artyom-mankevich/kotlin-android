@@ -15,35 +15,15 @@
         android:ellipsize="start"
         android:gravity="end|bottom"
         android:importantForAutofill="no"
-        android:paddingEnd="10pt"
         android:paddingStart="10pt"
+        android:paddingEnd="10pt"
         android:paddingBottom="10pt"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="50sp"
         android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
 
-    <TextView
-        android:id="@+id/result_field"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:paddingEnd="10pt"
-        android:paddingStart="10pt"
-        android:paddingBottom="10pt"
-        android:enabled="true"
-        android:focusable="true"
-        android:longClickable="true"
-        android:ellipsize="start"
-        android:gravity="end|bottom"
-        android:singleLine="true"
-        android:textColor="@android:color/white"
-        android:textSize="40sp"
-        android:scrollHorizontally="true"
-        android:textIsSelectable="true"
-        android:descendantFocusability="beforeDescendants"
-        />
-
+    <!--TODO: Replace current TableLayout with fragment to allow for advanced calculator    -->
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

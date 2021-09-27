@@ -2,11 +2,10 @@ package com.example.calculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import com.notkamui.keval.Keval
 import com.notkamui.keval.KevalInvalidExpressionException
 import com.notkamui.keval.KevalInvalidSymbolException
@@ -16,7 +15,6 @@ import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
     private lateinit var inputField: EditText
-    private lateinit var resultField: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +23,6 @@ class MainActivity : AppCompatActivity() {
         inputField = findViewById(R.id.input_field)
         inputField.showSoftInputOnFocus = false
         inputField.requestFocus()
-
-        resultField = findViewById(R.id.result_field)
-        resultField.movementMethod = ScrollingMovementMethod()
-        resultField.setTextIsSelectable(true)
     }
 
     fun typeClick(view: View) {
@@ -78,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
     fun clearAllButton(view: View) {
         inputField.setText("")
-        resultField.text = ""
     }
 
     fun actionClick(view: View) {
@@ -118,13 +111,25 @@ class MainActivity : AppCompatActivity() {
 
         try {
             val result = Keval.eval(text)
-            resultField.text = result.toString()
+
+            val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
+            inputField.setText(result.toString())
+            inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
         } catch (e: KevalZeroDivisionException) {
-            resultField.text = getString(R.string.zeroDivision)
+            Toast.makeText(
+                this, getString(R.string.zeroDivision),
+                Toast.LENGTH_SHORT
+            ).show()
         } catch (e: KevalInvalidSymbolException) {
-            resultField.text = getString(R.string.invalidOperator)
+            Toast.makeText(
+                this, getString(R.string.invalidOperator),
+                Toast.LENGTH_SHORT
+            ).show()
         } catch (e: KevalInvalidExpressionException) {
-            resultField.text = getString(R.string.invalidExpression)
+            Toast.makeText(
+                this, getString(R.string.invalidExpression),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }
