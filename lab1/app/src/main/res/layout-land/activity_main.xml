@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/input_field"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:ellipsize="start"
+        android:gravity="end|bottom"
+        android:importantForAutofill="no"
+        android:paddingStart="10pt"
+        android:paddingEnd="10pt"
+        android:paddingBottom="10pt"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_7"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_7" />
+
+            <Button
+                android:id="@+id/btn_8"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_8" />
+
+            <Button
+                android:id="@+id/btn_9"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_9" />
+
+            <Button
+                android:id="@+id/mul_btn"
+                style="@style/ActionButton"
+                android:onClick="actionClick"
+                android:text="@string/mul" />
+
+            <Button
+                android:id="@+id/div_btn"
+                style="@style/ActionButton"
+                android:onClick="actionClick"
+                android:text="@string/div" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_4"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_4" />
+
+            <Button
+                android:id="@+id/btn_5"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_5" />
+
+            <Button
+                android:id="@+id/btn_6"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_6" />
+
+            <Button
+                android:id="@+id/add_btn"
+                style="@style/ActionButton"
+                android:onClick="actionClick"
+                android:text="@string/add" />
+
+            <Button
+                android:id="@+id/sub_btn"
+                style="@style/ActionButton"
+                android:onClick="actionClick"
+                android:text="@string/sub" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_1"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_1" />
+
+            <Button
+                android:id="@+id/btn_2"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_2" />
+
+            <Button
+                android:id="@+id/btn_3"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_3" />
+
+            <Button
+                android:id="@+id/l_bracket_btn"
+                style="@style/ActionButton"
+                android:onClick="typeClick"
+                android:text="@string/leftBracket" />
+
+            <Button
+                android:id="@+id/r_bracket_btn"
+                style="@style/ActionButton"
+                android:onClick="typeClick"
+                android:text="@string/rightBracket" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:weightSum="5">
+
+            <Button
+                android:id="@+id/btn_0"
+                style="@style/NumberButton"
+                android:onClick="typeClick"
+                android:text="@string/_0" />
+
+            <Button
+                android:id="@+id/btn_dot"
+                style="@style/NumberButton"
+                android:onClick="dotClick"
+                android:text="@string/dot" />
+
+            <Button
+                android:id="@+id/clear_all_btn"
+                style="@style/ActionButton"
+                android:onClick="clearAllButton"
+                android:text="@string/clearAll" />
+
+            <Button
+                android:id="@+id/erase_btn"
+                style="@style/ActionButton"
+                android:onClick="eraseClick"
+                android:text="@string/clear" />
+
+            <Button
+                android:id="@+id/equal_btn"
+                style="@style/ActionButton"
+                android:onClick="equalClick"
+                android:text="@string/equal" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
