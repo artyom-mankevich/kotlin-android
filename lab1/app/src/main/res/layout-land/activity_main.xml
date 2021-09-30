@@ -36,31 +36,31 @@
 
             <Button
                 android:id="@+id/btn_7"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_7" />
 
             <Button
                 android:id="@+id/btn_8"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_8" />
 
             <Button
                 android:id="@+id/btn_9"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_9" />
 
             <Button
                 android:id="@+id/mul_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="actionClick"
                 android:text="@string/mul" />
 
             <Button
                 android:id="@+id/div_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="actionClick"
                 android:text="@string/div" />
         </TableRow>
@@ -71,31 +71,31 @@
 
             <Button
                 android:id="@+id/btn_4"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_4" />
 
             <Button
                 android:id="@+id/btn_5"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_5" />
 
             <Button
                 android:id="@+id/btn_6"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_6" />
 
             <Button
                 android:id="@+id/add_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="actionClick"
                 android:text="@string/add" />
 
             <Button
                 android:id="@+id/sub_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="actionClick"
                 android:text="@string/sub" />
         </TableRow>
@@ -106,31 +106,31 @@
 
             <Button
                 android:id="@+id/btn_1"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_1" />
 
             <Button
                 android:id="@+id/btn_2"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_2" />
 
             <Button
                 android:id="@+id/btn_3"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_3" />
 
             <Button
                 android:id="@+id/l_bracket_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/leftBracket" />
 
             <Button
                 android:id="@+id/r_bracket_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/rightBracket" />
         </TableRow>
@@ -143,31 +143,31 @@
 
             <Button
                 android:id="@+id/btn_0"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="typeClick"
                 android:text="@string/_0" />
 
             <Button
                 android:id="@+id/btn_dot"
-                style="@style/NumberButton"
+                style="@style/NumberButtonLandscape"
                 android:onClick="dotClick"
                 android:text="@string/dot" />
 
             <Button
                 android:id="@+id/clear_all_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="clearAllButton"
                 android:text="@string/clearAll" />
 
             <Button
                 android:id="@+id/erase_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="eraseClick"
                 android:text="@string/clear" />
 
             <Button
                 android:id="@+id/equal_btn"
-                style="@style/ActionButton"
+                style="@style/ActionButtonLandscape"
                 android:onClick="equalClick"
                 android:text="@string/equal" />
         </TableRow>

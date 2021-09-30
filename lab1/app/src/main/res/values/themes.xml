@@ -44,6 +44,36 @@
         <item name="android:insetBottom">0dp</item>
     </style>
 
+    <style name="ActionButtonLandscape">
+        <item name="android:layout_width">30pt</item>
+        <item name="android:layout_height">20pt</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">#202123</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">#767de8</item>
+        <item name="android:gravity">center</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="NumberButtonLandscape">
+        <item name="android:layout_width">30pt</item>
+        <item name="android:layout_height">20pt</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">#1B1C1C</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
     <style name="AdvancedButton">
         <item name="android:backgroundTint">#767de8</item>
         <item name="android:textColor">#1B1C1C</item>
