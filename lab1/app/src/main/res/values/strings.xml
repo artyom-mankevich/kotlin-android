@@ -23,4 +23,9 @@
     <string name="zeroDivision">Zero division is forbidden</string>
     <string name="invalidExpression">Invalid expression</string>
     <string name="invalidOperator">Invalid operator</string>
+    <string name="sqrt" translatable="false">sqrt</string>
+    <string name="pow" translatable="false">^</string>
+    <string name="sin" translatable="false">sin</string>
+    <string name="cos" translatable="false">cos</string>
+    <string name="mod" translatable="false">%</string>
 </resources>
