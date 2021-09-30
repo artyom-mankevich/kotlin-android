@@ -10,8 +10,10 @@ import com.notkamui.keval.Keval
 import com.notkamui.keval.KevalInvalidExpressionException
 import com.notkamui.keval.KevalInvalidSymbolException
 import com.notkamui.keval.KevalZeroDivisionException
+import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sin
 
 class MainActivity : AppCompatActivity() {
     private lateinit var inputField: EditText
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        inputField = findViewById(R.id.input_field)
+        inputField = findViewById(R.id.inputField)
         inputField.showSoftInputOnFocus = false
         inputField.requestFocus()
     }
@@ -80,9 +82,16 @@ class MainActivity : AppCompatActivity() {
         var prevChar: Char? = null
         val allIsSelected = cursorPos == inputField.text.length && inputField.selectionStart == 0
 
-        if (allIsSelected && buttonChar != '-') {
-            inputField.setText("")
-            return
+        if (allIsSelected) {
+            if (buttonChar != '-') {
+                inputField.setText("")
+                return
+            } else if (buttonChar == '-') {
+                val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
+                inputField.setText("-")
+                inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+                return
+            }
         }
 
         if (cursorPos > 0) {
@@ -90,12 +99,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         when (prevChar) {
-            '+', '-', '/', '*' -> {
-                val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
-                val stringBuilder = StringBuilder(inputField.text)
-                stringBuilder.setCharAt(cursorPos - 1, buttonChar)
-                inputField.setText(stringBuilder)
-                inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+            '+', '-' -> {
+                replacePrevChar(buttonChar)
+            }
+            '/', '*' -> {
+                if (buttonChar == '-') {
+                    insertInInputField(buttonChar.toString())
+                } else {
+                    replacePrevChar(buttonChar)
+                }
             }
             null -> return
             else -> insertInInputField(buttonChar.toString())
@@ -110,7 +122,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
-            val result = Keval.eval(text)
+            val result = Keval {
+                includeDefault()
+
+                function {
+                    name = "sin"
+                    arity = 1
+                    implementation = { args -> sin(args[0]) }
+                }
+
+                function {
+                    name = "cos"
+                    arity = 1
+                    implementation = { args -> cos(args[0]) }
+                }
+            }.eval(text)
 
             val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
             inputField.setText(result.toString())
@@ -132,6 +158,11 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
 
+    }
+
+    fun trigonometryClick(view: android.view.View) {
+        val buttonText = (view as Button).text.toString() + "("
+        insertInInputField(buttonText)
     }
 
     private fun getEnclosedNumber(text: CharSequence, cursorPos: Int): CharSequence {
@@ -178,6 +209,14 @@ class MainActivity : AppCompatActivity() {
         val newText =
             inputField.text.replace(min(start, end), max(start, end), text, 0, text.length)
         inputField.text = newText
+        inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+    }
+
+    private fun replacePrevChar(char: Char) {
+        val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
+        val stringBuilder = StringBuilder(inputField.text)
+        stringBuilder.setCharAt(inputField.selectionEnd - 1, char)
+        inputField.setText(stringBuilder)
         inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
     }
 }
