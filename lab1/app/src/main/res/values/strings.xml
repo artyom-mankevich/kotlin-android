@@ -28,4 +28,5 @@
     <string name="sin" translatable="false">sin</string>
     <string name="cos" translatable="false">cos</string>
     <string name="mod" translatable="false">%</string>
+    <string name="advancedCalculatorFAB">Advanced calculator floating button</string>
 </resources>

@@ -4,4 +4,5 @@
     <string name="zeroDivision">Нельзя делить на 0</string>
     <string name="invalidExpression">Неверное выражение</string>
     <string name="invalidOperator">Неверный оператор</string>
+    <string name="advancedCalculatorFAB">Плавающая кнопка продвинутого калькулятора</string>
 </resources>

@@ -1,11 +1,13 @@
 package com.example.calculator
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.notkamui.keval.Keval
 import com.notkamui.keval.KevalInvalidExpressionException
 import com.notkamui.keval.KevalInvalidSymbolException
@@ -17,6 +19,8 @@ import kotlin.math.sin
 
 class MainActivity : AppCompatActivity() {
     private lateinit var inputField: EditText
+    private var advancedIsDisplayed = false
+    private lateinit var advancedFragment: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         inputField = findViewById(R.id.inputField)
         inputField.showSoftInputOnFocus = false
         inputField.requestFocus()
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            advancedFragment = findViewById(R.id.advancedFragment)
+            advancedFragment.visibility = View.GONE
+        }
     }
 
     fun typeClick(view: View) {
@@ -218,5 +227,15 @@ class MainActivity : AppCompatActivity() {
         stringBuilder.setCharAt(inputField.selectionEnd - 1, char)
         inputField.setText(stringBuilder)
         inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+    }
+
+    fun advancedCalcClick(view: android.view.View) {
+        if (advancedIsDisplayed) {
+            advancedFragment.visibility = View.GONE
+            advancedIsDisplayed = false
+        } else {
+            advancedFragment.visibility = View.VISIBLE
+            advancedIsDisplayed = true
+        }
     }
 }
