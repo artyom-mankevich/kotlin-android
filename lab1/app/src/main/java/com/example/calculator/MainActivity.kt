@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             '+', '-' -> {
                 replacePrevChar(buttonChar)
             }
-            '/', '*' -> {
+            '/', '*', '^', '%' -> {
                 if (buttonChar == '-') {
                     insertInInputField(buttonChar.toString())
                 } else {
