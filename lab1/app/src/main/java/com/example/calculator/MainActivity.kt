@@ -173,6 +173,16 @@ class MainActivity : AppCompatActivity() {
         insertInInputField(buttonText)
     }
 
+    fun advancedCalcClick(view: android.view.View) {
+        if (advancedIsDisplayed) {
+            advancedFragment.visibility = View.GONE
+            advancedIsDisplayed = false
+        } else {
+            advancedFragment.visibility = View.VISIBLE
+            advancedIsDisplayed = true
+        }
+    }
+
     private fun getEnclosedNumber(text: CharSequence, cursorPos: Int): CharSequence {
         // index of first digit of number
         val numberStart = getNumberStart(text, cursorPos)
@@ -226,15 +236,5 @@ class MainActivity : AppCompatActivity() {
         stringBuilder.setCharAt(inputField.selectionEnd - 1, char)
         inputField.setText(stringBuilder)
         inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
-    }
-
-    fun advancedCalcClick(view: android.view.View) {
-        if (advancedIsDisplayed) {
-            advancedFragment.visibility = View.GONE
-            advancedIsDisplayed = false
-        } else {
-            advancedFragment.visibility = View.VISIBLE
-            advancedIsDisplayed = true
-        }
     }
 }
