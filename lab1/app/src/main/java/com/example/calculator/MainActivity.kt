@@ -27,29 +27,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         inputField = findViewById(R.id.inputField)
-        inputField.showSoftInputOnFocus = false
+        inputField.showSoftInputOnFocus = false // to disable default keyboard popping up
         inputField.requestFocus()
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // advanced fragment is always displayed in landscape mode
             advancedFragment = findViewById(R.id.advancedFragment)
             advancedFragment.visibility = View.GONE
         }
     }
 
     fun typeClick(view: View) {
+        // all buttons that require just displaying typed character like number and brackets buttons
         val button = view as Button
         insertInInputField(button.text.toString())
     }
 
     fun eraseClick(view: View) {
         if (inputField.selectionEnd - inputField.selectionStart != 0) {
+            // if something is selected -> erase selected area
             insertInInputField("")
         } else if (inputField.selectionEnd > 0) {
+            // cursor position is stored from the end so it is saved after changing the text
             val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
             val stringBuilder = StringBuilder(inputField.text.toString())
             stringBuilder.deleteAt(inputField.selectionEnd - 1)
             inputField.setText(stringBuilder)
-            inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+            inputField.setSelection(inputField.text.length - cursorPositionFromEnd) // setting the cursor
         }
     }
 
@@ -59,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val hasSelected = cursorPos - inputField.selectionStart.coerceAtLeast(0) != 0
         val text = inputField.text
 
-        // if previous character is comma -> return
+        // if previous character is dot -> return
         if (cursorPos > 0) {
             val prevChar = text[cursorPos - 1]
             if (prevChar == buttonChar) {
@@ -67,12 +71,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // if user selected something or text is empty -> replace the selected with comma
+        // if user selected something or text is empty -> replace the selected with dot
         if (hasSelected || text.isEmpty()) {
             insertInInputField(buttonChar.toString())
             return
         }
 
+        // number is something enclosed by operators
         val number = getEnclosedNumber(text, cursorPos)
         if (number.contains(buttonChar)) {
             return
@@ -85,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         inputField.setText("")
     }
 
+    // action click is for arithmetic operators
     fun actionClick(view: View) {
         val buttonChar = (view as Button).text.single()
         val cursorPos = inputField.selectionEnd
@@ -123,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // equal click evaluates input expression
     fun equalClick(view: View) {
         val text = inputField.text.toString()
 
@@ -131,9 +138,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
+            // Keval is third-party library to evaluate string to arithmetic expression
             val result = Keval {
                 includeDefault()
 
+                // since Keval doesn't support sin and cos by default, add them manually
                 function {
                     name = "sin"
                     arity = 1
@@ -173,6 +182,7 @@ class MainActivity : AppCompatActivity() {
         insertInInputField(buttonText)
     }
 
+    // toggling advanced panel's visibility
     fun advancedCalcClick(view: android.view.View) {
         if (advancedIsDisplayed) {
             advancedFragment.visibility = View.GONE
@@ -219,6 +229,7 @@ class MainActivity : AppCompatActivity() {
         return numberEnd
     }
 
+    // function that types text at current cursor position
     private fun insertInInputField(text: String) {
         val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
 
