@@ -147,9 +147,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }.eval(text)
 
-            val cursorPositionFromEnd = inputField.text.length - inputField.selectionEnd
             inputField.setText(result.toString())
-            inputField.setSelection(inputField.text.length - cursorPositionFromEnd)
+            inputField.setSelection(0)
         } catch (e: KevalZeroDivisionException) {
             Toast.makeText(
                 this, getString(R.string.zeroDivision),
