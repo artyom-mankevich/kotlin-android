@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             '+', '-' -> {
                 replacePrevChar(buttonChar)
             }
-            '/', '*' -> {
+            '/', '*', '^', '%' -> {
                 if (buttonChar == '-') {
                     insertInInputField(buttonChar.toString())
                 } else {
@@ -194,14 +194,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun getNumberStart(text: CharSequence, cursorPos: Int): Int {
         return text.slice(0 until cursorPos).indexOfLast {
-            it == '-' || it == '+' || it == '/' || it == '*'
+            it == '-' || it == '+' || it == '/' || it == '*' || it == '^' || it == '%'
         }.coerceAtLeast(0)
     }
 
     private fun getNumberEnd(text: CharSequence, cursorPos: Int): Int {
         val numberEnd = if (cursorPos != text.length) {
             text.slice(cursorPos until text.length).indexOfFirst {
-                it == '-' || it == '+' || it == '/' || it == '*'
+                it == '-' || it == '+' || it == '/' || it == '*' || it == '^' || it == '%'
             }
         } else {
             text.length
