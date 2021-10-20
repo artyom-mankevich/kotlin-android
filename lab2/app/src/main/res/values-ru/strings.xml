@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Список абитуриентов</string>
+    <string name="enrolleesCount">Количество абитуриентов:</string>
+    <string name="cityName">Название города</string>
+</resources>

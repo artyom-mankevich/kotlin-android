@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purpleItem"
+    android:maxHeight="100dp"
+    android:minHeight="50dp">
+
+    <TextView
+        android:id="@+id/enrolleeSecondName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Фамилия"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/enrolleeCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/enrolleeFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Имя"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/enrolleeCity"
+        app:layout_constraintStart_toEndOf="@+id/enrolleeSecondName"
+        app:layout_constraintTop_toTopOf="@+id/enrolleeSecondName" />
+
+    <TextView
+        android:id="@+id/enrolleePaternal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Отчество"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/enrolleeCity"
+        app:layout_constraintStart_toEndOf="@+id/enrolleeFirstName"
+        app:layout_constraintTop_toTopOf="@id/enrolleeFirstName" />
+
+    <TextView
+        android:id="@+id/enrolleeCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Город"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/enrolleeAvgGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="Ср. оценка"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
