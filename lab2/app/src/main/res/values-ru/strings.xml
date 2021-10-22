@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Список абитуриентов</string>
-    <string name="enrolleesCount">Количество абитуриентов:</string>
+    <string name="enrolleesCount">Кол-во абитуриентов с ср. баллом >= 4.5:</string>
     <string name="cityName">Название города</string>
+    <string name="editTextHint">Название города, например: Минск</string>
 </resources>
