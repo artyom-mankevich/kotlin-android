@@ -1,14 +1,17 @@
 package com.example.enrolleeslist
 
-class Enrollee(
-    val firstName: String,
-    val secondName: String,
-    _city: String,
-    private val grades: Array<Int>,
-    val paternal: String? = null
-) {
-    var city: String = _city
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+@kotlinx.serialization.Serializable
+class Enrollee(
+    var firstName: String,
+    val secondName: String,
+    val city: String,
+    val grades: ArrayList<Int>,
+    val paternal: String? = null
+) : Parcelable {
     fun getAverageGrade(): Double {
         return grades.average()
     }

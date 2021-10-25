@@ -3,4 +3,21 @@
     <string name="enrolleesCount">Enrollees count with avg score >= 4.5:</string>
     <string name="cityName">City Name</string>
     <string name="editTextHint">City name, e.g. Minsk</string>
+    <string name="editContextMenuItem">Edit</string>
+    <string name="deleteContextMenuItem">Delete</string>
+    <string name="countButtonText">Count</string>
+    <string name="filterSwitchText">Filter</string>
+    <string name="addButtonText">Add</string>
+    <string name="first_name_label">First name:</string>
+    <string name="second_name_label">Second name:</string>
+    <string name="paternal_label">Paternal:</string>
+    <string name="paternal_input_hint">Optional</string>
+    <string name="city_label">City:</string>
+    <string name="grades_label">Grades:</string>
+    <string name="grades_input_hint">Grades separated by commas, e.g.: 5,5,5</string>
+    <string name="back_button_text">Back</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="inputError">Input error</string>
+    <string name="open_file">Open file</string>
+    <string name="fileError">File can\'t be opened</string>
 </resources>

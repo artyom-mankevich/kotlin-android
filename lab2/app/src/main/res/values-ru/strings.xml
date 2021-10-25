@@ -4,4 +4,21 @@
     <string name="enrolleesCount">Кол-во абитуриентов с ср. баллом >= 4.5:</string>
     <string name="cityName">Название города</string>
     <string name="editTextHint">Название города, например: Минск</string>
+    <string name="editContextMenuItem">Редактировать</string>
+    <string name="deleteContextMenuItem">Удалить</string>
+    <string name="countButtonText">Посчитать</string>
+    <string name="filterSwitchText">Фильтр</string>
+    <string name="addButtonText">Добавить</string>
+    <string name="first_name_label">Имя:</string>
+    <string name="second_name_label">Фамилия:</string>
+    <string name="paternal_label">Отчество:</string>
+    <string name="paternal_input_hint">Необязательно</string>
+    <string name="city_label">Город:</string>
+    <string name="grades_label">Оценки:</string>
+    <string name="grades_input_hint">Оценки через запятую: 5,5,5</string>
+    <string name="back_button_text">Назад</string>
+    <string name="submit_button_text">Готово</string>
+    <string name="inputError">Ошибка ввода</string>
+    <string name="open_file">Открыть файл</string>
+    <string name="fileError">Файл не может быть открыт</string>
 </resources>
