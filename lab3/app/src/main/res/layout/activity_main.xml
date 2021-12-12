@@ -29,8 +29,26 @@
         app:layout_constraintTop_toBottomOf="@id/image"
         app:layout_constraintVertical_bias="0.1" />
 
+    <TextView
+        android:id="@+id/timestampText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seekBar"
+        app:layout_constraintTop_toTopOf="@id/seekBar"/>
+
+    <TextView
+        android:id="@+id/lengthText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/seekBar"
+        app:layout_constraintTop_toTopOf="@id/seekBar"/>
+
     <Button
-        android:id="@+id/play_btn"
+        android:id="@+id/playButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/play"
@@ -41,47 +59,47 @@
         app:layout_constraintVertical_bias="0.187" />
 
     <Button
-        android:id="@+id/prev_btn"
+        android:id="@+id/prevButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/prev"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/play_btn"
+        app:layout_constraintEnd_toStartOf="@+id/playButton"
         app:layout_constraintHorizontal_bias="0.656"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seekBar"
         app:layout_constraintVertical_bias="0.187" />
 
     <Button
-        android:id="@+id/next_btn"
+        android:id="@+id/nextButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.344"
-        app:layout_constraintStart_toEndOf="@+id/play_btn"
+        app:layout_constraintStart_toEndOf="@+id/playButton"
         app:layout_constraintTop_toBottomOf="@id/seekBar"
         app:layout_constraintVertical_bias="0.187" />
 
     <Button
-        android:id="@+id/back_btn"
+        android:id="@+id/backButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/back"
-        app:layout_constraintBottom_toBottomOf="@id/prev_btn"
-        app:layout_constraintEnd_toStartOf="@+id/prev_btn"
+        app:layout_constraintBottom_toBottomOf="@id/prevButton"
+        app:layout_constraintEnd_toStartOf="@+id/prevButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/prev_btn" />
+        app:layout_constraintTop_toTopOf="@id/prevButton" />
 
     <Button
-        android:id="@+id/forth_btn"
+        android:id="@+id/forthButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/forth"
-        app:layout_constraintBottom_toBottomOf="@id/next_btn"
+        app:layout_constraintBottom_toBottomOf="@id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/next_btn"
-        app:layout_constraintTop_toTopOf="@id/next_btn" />
+        app:layout_constraintStart_toEndOf="@id/nextButton"
+        app:layout_constraintTop_toTopOf="@id/nextButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
