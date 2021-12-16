@@ -107,7 +107,7 @@
         android:id="@+id/playButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/play"
+        android:background="@drawable/stop"
         android:onClick="playButtonOnClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
