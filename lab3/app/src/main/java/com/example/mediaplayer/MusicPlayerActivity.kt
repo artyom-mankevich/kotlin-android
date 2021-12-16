@@ -1,9 +1,11 @@
 package com.example.mediaplayer
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Button
@@ -12,13 +14,29 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
-import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.abs
 
 
 class MusicPlayerActivity : AppCompatActivity() {
-    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mService: MusicPlayerService
+    private var mBound = false
+
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as MusicPlayerService.MyBinder
+            mService = binder.getService()
+            mService.setCallBack(this@MusicPlayerActivity)
+            mBound = true
+            observer = MediaObserver()
+            Thread(observer).start()
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
 
     private lateinit var playButton: Button
     private lateinit var prevButton: Button
@@ -48,10 +66,11 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
 
         override fun run() {
-            while (!stop.get() && mediaPlayer.isPlaying) {
+            while (!stop.get()) {
+                val curPos = mService.getCurrentPosition()
                 seekBar.progress =
-                    (mediaPlayer.currentPosition.toDouble() / mediaPlayer.duration.toDouble() * 100).toInt()
-                val cur = mediaPlayer.currentPosition / 1000
+                    (curPos.toDouble() / mService.getDuration().toDouble() * 100).toInt()
+                val cur = curPos / 1000
                 var str = ""
                 val mins = cur / 60
                 if (mins < 10) str += "0"
@@ -77,37 +96,25 @@ class MusicPlayerActivity : AppCompatActivity() {
             if (abs(velocityX) > 2 * abs(velocityY)) {
                 // отрицательный - следующий
                 // положительный - предыдущий
-                if (velocityX < 0) {
-                    if (musicFile != null) {
-                        musicFilePosition = (musicFilePosition + 1) % musicFiles.count()
-                        playCurrentTrack()
+                if (musicFile != null) {
+                    if (velocityX < 0) {
+                        mService.playNextTrack()
+                        musicFile = mService.getCurrentFile()
+                        changeText()
+                    } else {
+                        mService.playPreviousTrack()
+                        musicFile = mService.getCurrentFile()
+                        changeText()
                     }
-                } else previousTrack()
+                }
             }
             return true
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music_player)
-
-        mediaPlayer = MediaPlayer()
-        mediaPlayer.setOnPreparedListener {
-            it.start()
-            observer = MediaObserver()
-            Thread(observer).start()
-            playButton.background = ContextCompat.getDrawable(this, R.drawable.stop)
-        }
-        mediaPlayer.setOnCompletionListener {
-            it.stop()
-            it.reset()
-            observer?.stop()
-            observer = null
-            musicFilePosition = (musicFilePosition + 1) % musicFiles.count()
-            playCurrentTrack()
-        }
 
         playButton = findViewById(R.id.playButton)
         prevButton = findViewById(R.id.prevButton)
@@ -133,7 +140,6 @@ class MusicPlayerActivity : AppCompatActivity() {
                 artistText.text = musicFile!!.artist
                 titleText.text = musicFile!!.title
                 lengthText.text = musicFile!!.duration
-                openMediaFile(Uri.fromFile(File(musicFile!!.path)))
             }
         }
 
@@ -145,8 +151,8 @@ class MusicPlayerActivity : AppCompatActivity() {
                     fromUser: Boolean
                 ) {
                     if (fromUser) {
-                        val time = progress * mediaPlayer.duration / 100
-                        mediaPlayer.seekTo(time)
+                        val time = progress * mService.getDuration() / 100
+                        mService.seekTo(time)
                     }
                 }
 
@@ -161,80 +167,80 @@ class MusicPlayerActivity : AppCompatActivity() {
         detector = GestureDetectorCompat(this, MyGestureListener())
     }
 
+    override fun onStart() {
+        super.onStart()
+        Intent(this, MusicPlayerService::class.java).also { intent ->
+            intent.putExtra("musicFile", musicFile)
+            intent.putExtra("musicFiles", musicFiles)
+            intent.putExtra("musicFilePosition", musicFilePosition)
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            startService(intent)
+        }
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         detector.onTouchEvent(event)
         return super.onTouchEvent(event)
     }
 
-
-    private fun openMediaFile(fileUri: Uri) {
-        mediaPlayer.apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-            setDataSource(applicationContext, fileUri)
-            prepareAsync()
-        }
-    }
-
     fun playButtonOnClick(view: android.view.View) {
         if (musicFile == null) return
 
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
-            playButton.background = ContextCompat.getDrawable(this, R.drawable.play)
-        } else {
-            mediaPlayer.start()
-            playButton.background = ContextCompat.getDrawable(this, R.drawable.stop)
+        if (mBound) {
+            if (mService.getIsPlaying()) {
+                playButton.background = ContextCompat.getDrawable(this, R.drawable.play)
+            } else {
+                playButton.background = ContextCompat.getDrawable(this, R.drawable.stop)
+            }
+            mService.playPause()
         }
     }
 
     override fun onStop() {
         super.onStop()
         observer?.stop()
-        mediaPlayer.release()
+        if (mBound) {
+            musicFile = mService.getCurrentFile()
+            changeText()
+            unbindService(connection)
+            mBound = false
+        }
     }
 
-    private fun changeText() {
+    override fun onPause() {
+        super.onPause()
+        unbindService(connection)
+        mBound = false
+    }
+
+    fun changeText() {
         artistText.text = musicFile!!.artist
         titleText.text = musicFile!!.title
         lengthText.text = musicFile!!.duration
         timestampText.text = "0:00"
+        playButton.background = ContextCompat.getDrawable(this, R.drawable.stop)
+    }
+
+    fun setMusicFile(file: MusicFile) {
+        musicFile = file
     }
 
     fun nextButtonOnClick(view: android.view.View) {
         if (musicFile == null) return
 
-        musicFilePosition = (musicFilePosition + 1) % musicFiles.count()
-        playCurrentTrack()
-    }
-
-    private fun playCurrentTrack() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.stop()
+        if (mBound) {
+            mService.playNextTrack()
+            musicFile = mService.getCurrentFile()
+            changeText()
         }
-        mediaPlayer.reset()
-        mediaPlayer.setDataSource(musicFiles[musicFilePosition].path)
-        mediaPlayer.prepareAsync()
-        musicFile = musicFiles[musicFilePosition]
-        changeText()
     }
 
     fun prevButtonOnClick(view: android.view.View) {
         if (musicFile == null) return
-        previousTrack()
-    }
-
-    private fun previousTrack() {
-        if (mediaPlayer.currentPosition in 0..5000 || mediaPlayer.duration < 5000) {
-            musicFilePosition -= 1
-            if (musicFilePosition < 0) musicFilePosition = musicFiles.count() - 1
-            playCurrentTrack()
-        } else {
-            mediaPlayer.seekTo(0)
+        if (mBound) {
+            mService.playPreviousTrack()
+            musicFile = mService.getCurrentFile()
+            changeText()
         }
     }
 
@@ -242,16 +248,17 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onDestroy()
         observer?.stop()
         observer = null
-        mediaPlayer.release()
     }
 
     fun backButtonOnClick(view: android.view.View) {
-        val time = (mediaPlayer.currentPosition - 10000).coerceAtLeast(0)
-        mediaPlayer.seekTo(time)
+        if (mBound) {
+            mService.backTenSecs()
+        }
     }
 
     fun forthButtonOnClick(view: android.view.View) {
-        val time = (mediaPlayer.currentPosition + 10000).coerceAtMost(mediaPlayer.duration)
-        mediaPlayer.seekTo(time)
+        if (mBound) {
+            mService.forthTenSecs()
+        }
     }
 }
