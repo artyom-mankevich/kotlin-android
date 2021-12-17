@@ -1,18 +1,43 @@
-package com.example.mediaplayer
+package com.example.mediaplayer.services
 
-import android.app.Service
+import android.app.*
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.*
+import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
+import com.example.mediaplayer.MyNotification
+import com.example.mediaplayer.file_models.MusicFile
+import com.example.mediaplayer.activities.MusicPlayerActivity
 import java.io.File
 
+
 class MusicPlayerService : Service() {
+    private lateinit var myNotification: MyNotification
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.getStringExtra("actionName")) {
+                myNotification.actionPrevious -> playPreviousTrack()
+                myNotification.actionNext -> playNextTrack()
+                myNotification.actionPlay -> playPause()
+            }
+        }
+    }
+
     private lateinit var mediaPlayer: MediaPlayer
+
+    inner class MyBinder : Binder() {
+        fun getService(): MusicPlayerService {
+            return this@MusicPlayerService
+        }
+    }
     private val binder = MyBinder()
 
     private var musicFile: MusicFile? = null
@@ -20,28 +45,24 @@ class MusicPlayerService : Service() {
     private var musicFiles: ArrayList<MusicFile> = arrayListOf()
     private var musicPlayer: MusicPlayerActivity? = null
 
-    inner class MyBinder : Binder() {
-        fun getService(): MusicPlayerService {
-            return this@MusicPlayerService
-        }
-    }
-
-    fun setCallBack(player: MusicPlayerActivity) {
-        musicPlayer = player
-    }
-
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
+        myNotification = MyNotification()
+        myNotification.initManager(this)
         mediaPlayer.setOnPreparedListener {
             it.start()
+            myNotification.createNotification(
+                this,
+                mediaPlayer.isPlaying,
+                musicFile?.title,
+                musicFile?.artist
+            )
         }
         mediaPlayer.setOnCompletionListener {
             it.stop()
             it.reset()
             playNextTrack()
-            musicPlayer?.setMusicFile(musicFile!!)
-            musicPlayer?.changeText()
         }
     }
 
@@ -59,6 +80,14 @@ class MusicPlayerService : Service() {
 
             if (musicFile != null && !isSameFile) {
                 openMediaFile(Uri.fromFile(File(musicFile!!.path)))
+                myNotification.createNotification(
+                    this,
+                    mediaPlayer.isPlaying,
+                    musicFile?.title,
+                    musicFile?.artist
+                )
+                registerReceiver(broadcastReceiver, IntentFilter("TRACKS_TRACKS"))
+                startService(Intent(baseContext, OnClearFromRecentService::class.java))
             }
         }
         return START_STICKY
@@ -67,11 +96,17 @@ class MusicPlayerService : Service() {
     override fun onDestroy() {
         mediaPlayer.stop()
         mediaPlayer.release()
+        myNotification.cancelAll()
+        unregisterReceiver(broadcastReceiver)
         super.onDestroy()
     }
 
     override fun onBind(intent: Intent?): IBinder {
         return binder
+    }
+
+    fun setCallBack(player: MusicPlayerActivity) {
+        musicPlayer = player
     }
 
     private fun openMediaFile(fileUri: Uri) {
@@ -100,6 +135,14 @@ class MusicPlayerService : Service() {
         mediaPlayer.setDataSource(musicFiles[musicFilePosition].path)
         mediaPlayer.prepareAsync()
         musicFile = musicFiles[musicFilePosition]
+        myNotification.createNotification(
+            this,
+            mediaPlayer.isPlaying,
+            musicFile?.title,
+            musicFile?.title
+        )
+        if (musicPlayer == null) println("MUSIC PLAYER IS NULL")
+        musicPlayer?.setMusicFile(musicFile)
     }
 
     fun playPreviousTrack() {
@@ -143,6 +186,12 @@ class MusicPlayerService : Service() {
         } else {
             mediaPlayer.start()
         }
+        myNotification.createNotification(
+            this,
+            mediaPlayer.isPlaying,
+            musicFile?.title,
+            musicFile?.artist
+        )
     }
 
     fun getDuration(): Int {
