@@ -1,4 +1,4 @@
-package com.example.mediaplayer
+package com.example.mediaplayer.fragments
 
 import android.content.ContentResolver
 import android.content.Intent
@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import androidx.fragment.app.Fragment
+import com.example.mediaplayer.R
+import com.example.mediaplayer.activities.MusicPlayerActivity
+import com.example.mediaplayer.file_models.MusicFile
+import com.example.mediaplayer.list_adapters.MusicFileAdapter
 import java.util.*
 
 
-class MusicFragment : Fragment() {
+class MusicFragment : AbstractFragment() {
     private var musicFiles: ArrayList<MusicFile> = arrayListOf()
     private lateinit var musicFileAdapter: MusicFileAdapter
 
@@ -53,13 +56,7 @@ class MusicFragment : Fragment() {
                 val url =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
 
-                val mins = (duration / 1000) / 60
-                val secs = (duration / 1000) % 60
-                var durationStr = ""
-                if (mins < 10) durationStr += "0"
-                durationStr += "$mins:"
-                if (secs < 10) durationStr += "0"
-                durationStr += secs.toString()
+                val durationStr = super.getFormattedDurationString(duration)
 
                 musicFiles.add(MusicFile(url, title, artist, durationStr, null))
             } while (cursor.moveToNext())
