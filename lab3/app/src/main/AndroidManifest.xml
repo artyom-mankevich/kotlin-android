@@ -13,19 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MediaPlayer">
+        <activity
+            android:name=".activities.VideoPlayerActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
         <service
-            android:name="MusicPlayerService"
-            android:exported="false">
-        </service>
+            android:name=".services.MusicPlayerService"
+            android:exported="false" />
+
+        <service android:name=".services.OnClearFromRecentService" />
+
+        <receiver android:name=".NotificationActionReceiver" />
 
         <activity
-            android:name=".MusicPlayerActivity"
+            android:name=".activities.MusicPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
