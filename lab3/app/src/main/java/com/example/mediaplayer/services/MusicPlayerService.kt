@@ -13,8 +13,8 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import com.example.mediaplayer.MyNotification
-import com.example.mediaplayer.file_models.MusicFile
 import com.example.mediaplayer.activities.MusicPlayerActivity
+import com.example.mediaplayer.file_models.MusicFile
 import java.io.File
 
 
@@ -38,6 +38,7 @@ class MusicPlayerService : Service() {
             return this@MusicPlayerService
         }
     }
+
     private val binder = MyBinder()
 
     private var musicFile: MusicFile? = null
