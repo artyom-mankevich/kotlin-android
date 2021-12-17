@@ -1,4 +1,4 @@
-package com.example.mediaplayer
+package com.example.mediaplayer.file_models
 
 import android.graphics.Bitmap
 import android.os.Parcelable
