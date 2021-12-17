@@ -1,4 +1,4 @@
-package com.example.mediaplayer
+package com.example.mediaplayer.activities
 
 import android.content.ComponentName
 import android.content.Context
@@ -14,49 +14,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
+import com.example.mediaplayer.R
+import com.example.mediaplayer.file_models.MusicFile
+import com.example.mediaplayer.services.MusicPlayerService
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.abs
 
 
 class MusicPlayerActivity : AppCompatActivity() {
-    private lateinit var mService: MusicPlayerService
-    private var mBound = false
-
-    private val connection = object : ServiceConnection {
-
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as MusicPlayerService.MyBinder
-            mService = binder.getService()
-            mService.setCallBack(this@MusicPlayerActivity)
-            mBound = true
-            observer = MediaObserver()
-            Thread(observer).start()
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            mBound = false
-        }
-    }
-
-    private lateinit var playButton: Button
-    private lateinit var prevButton: Button
-    private lateinit var nextButton: Button
-    private lateinit var backButton: Button
-    private lateinit var forthButton: Button
-
-    private lateinit var seekBar: SeekBar
-
-    private lateinit var artistText: TextView
-    private lateinit var titleText: TextView
-    private lateinit var lengthText: TextView
-    private lateinit var timestampText: TextView
-
-    private var musicFile: MusicFile? = null
-    private var musicFilePosition: Int = 0
-    private var musicFiles: ArrayList<MusicFile> = arrayListOf()
-
-    private lateinit var detector: GestureDetectorCompat
-
     private var observer: MediaObserver? = null
 
     private inner class MediaObserver : Runnable {
@@ -86,6 +51,41 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var mService: MusicPlayerService
+    private var mBound = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as MusicPlayerService.MyBinder
+            mService = binder.getService()
+            mService.setCallBack(this@MusicPlayerActivity)
+            mBound = true
+            observer = MediaObserver()
+            Thread(observer).start()
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
+
+    private lateinit var playButton: Button
+    private lateinit var prevButton: Button
+    private lateinit var nextButton: Button
+    private lateinit var backButton: Button
+    private lateinit var forthButton: Button
+    private lateinit var seekBar: SeekBar
+    private lateinit var artistText: TextView
+    private lateinit var titleText: TextView
+    private lateinit var lengthText: TextView
+    private lateinit var timestampText: TextView
+
+    private var musicFile: MusicFile? = null
+    private var musicFilePosition: Int = 0
+    private var musicFiles: ArrayList<MusicFile> = arrayListOf()
+
+    private lateinit var detector: GestureDetectorCompat
+
     private inner class MyGestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onFling(
             event1: MotionEvent,
@@ -94,8 +94,6 @@ class MusicPlayerActivity : AppCompatActivity() {
             velocityY: Float
         ): Boolean {
             if (abs(velocityX) > 2 * abs(velocityY)) {
-                // отрицательный - следующий
-                // положительный - предыдущий
                 if (musicFile != null) {
                     if (velocityX < 0) {
                         mService.playNextTrack()
@@ -110,6 +108,11 @@ class MusicPlayerActivity : AppCompatActivity() {
             }
             return true
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        detector.onTouchEvent(event)
+        return super.onTouchEvent(event)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +131,6 @@ class MusicPlayerActivity : AppCompatActivity() {
         titleText = findViewById(R.id.titleText)
         lengthText = findViewById(R.id.lengthText)
         timestampText = findViewById(R.id.timestampText)
-
 
         val arguments: Bundle? = intent.extras
         if (arguments != null) {
@@ -178,9 +180,40 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        detector.onTouchEvent(event)
-        return super.onTouchEvent(event)
+    override fun onPause() {
+        musicFile = mService.getCurrentFile()
+        changeText()
+        unbindService(connection)
+        mBound = false
+        super.onPause()
+    }
+
+    override fun onStop() {
+        observer?.stop()
+        if (mBound) {
+            unbindService(connection)
+            mBound = false
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        println("ON DESTROY")
+
+        observer?.stop()
+        observer = null
+        if (mBound) {
+            unbindService(connection)
+            mBound = false
+        }
+        super.onDestroy()
+    }
+
+    override fun onResume() {
+        if (this::mService.isInitialized) {
+            setMusicFile(mService.getCurrentFile())
+        }
+        super.onResume()
     }
 
     fun playButtonOnClick(view: android.view.View) {
@@ -196,24 +229,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        observer?.stop()
-        if (mBound) {
-            musicFile = mService.getCurrentFile()
-            changeText()
-            unbindService(connection)
-            mBound = false
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        unbindService(connection)
-        mBound = false
-    }
-
-    fun changeText() {
+    private fun changeText() {
         artistText.text = musicFile!!.artist
         titleText.text = musicFile!!.title
         lengthText.text = musicFile!!.duration
@@ -221,8 +237,9 @@ class MusicPlayerActivity : AppCompatActivity() {
         playButton.background = ContextCompat.getDrawable(this, R.drawable.stop)
     }
 
-    fun setMusicFile(file: MusicFile) {
+    fun setMusicFile(file: MusicFile?) {
         musicFile = file
+        changeText()
     }
 
     fun nextButtonOnClick(view: android.view.View) {
@@ -230,8 +247,6 @@ class MusicPlayerActivity : AppCompatActivity() {
 
         if (mBound) {
             mService.playNextTrack()
-            musicFile = mService.getCurrentFile()
-            changeText()
         }
     }
 
@@ -239,15 +254,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         if (musicFile == null) return
         if (mBound) {
             mService.playPreviousTrack()
-            musicFile = mService.getCurrentFile()
-            changeText()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        observer?.stop()
-        observer = null
     }
 
     fun backButtonOnClick(view: android.view.View) {
