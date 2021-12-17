@@ -10,12 +10,11 @@
     android:minHeight="60dp">
 
     <ImageView
-        android:id="@+id/artImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/videoImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
-        android:contentDescription="Music Cover"
-        android:src="@drawable/image"
+        android:src="@drawable/mp4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,34 +23,23 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="20dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="Title"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/artistText"
-        app:layout_constraintStart_toEndOf="@id/artImage"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/artistText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Artist"
+        android:maxLength="20"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/artImage" />
+        app:layout_constraintStart_toEndOf="@+id/videoImage"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/durationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:text="Duration"
-        android:textSize="25sp"
+        android:text="00:00"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
