@@ -25,4 +25,21 @@ In landscape mode:
 ![Alt-text](https://i.ibb.co/ncq7LJc/g.jpg)
 
 ## [lab2](lab2) is an app to display and filter enrollees list.
+### Features
+- Display enrollees' info and calculated average grade on the main page
+- Loading enrollees from json file on the device
+- Filtering enrollees whose average grade is higher than 4.5
+- Search bar for enrollees' cities
+- Count the enrollees with avg grade > 4.5
+- Edit/Delete context menu
+- Ability to add new enrollees via creation form
+- Support for Russian and English (default) localization
+
 ## [lab3](lab3) is a media player app.
+### Features
+- Autoload of all music and video files on the device
+- Separate tabs for music and video lists on the main page
+- Play/pause, next/previous track, controllable track progress bar which is auto updated in a separate thread, skipping back/forth for 10 secs, usage of swipes to play next and previous tracks
+- Fullscreen mode for videos
+- Synchronised player notification with playing controls and progress bar
+- Background listening
